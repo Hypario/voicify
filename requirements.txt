@@ -1,0 +1,5 @@
+cffi==1.15.1
+keyboard==0.13.5
+numpy==1.24.2
+PyAudio==0.2.13
+pycparser==2.21
