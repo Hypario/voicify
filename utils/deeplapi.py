@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import logging
 
 import json
@@ -6,7 +8,7 @@ import requests
 import config
 
 
-def deepl_translate(source_lang, target_lang, text):
+def translate(source_lang, target_lang, text):
     """Translate text using DeepL API"""
 
     url = config.DEEPL_API_URL
@@ -23,12 +25,11 @@ def deepl_translate(source_lang, target_lang, text):
         response = json.loads(response.text)
 
         if response['translations']:
-            try:
-                translated = response['translations'][0]['text'].encode("raw_unicode_escape").decode("utf-8")
-            except UnicodeDecodeError:
-                translated = response['translations'][0]['text']
-            logging.info("\t--> %s" % translated)
+            translated = response['translations'][0]['text']
+
+            logging.info("--> %s" % translated)
+            return translated
     else:
-        logging.error("Error in Deepl API : %s - Fallback to French" % response.reason)
+        logging.error("Error in Deepl API : %s - Fallback to French --> %s" % (response.reason, text))
 
     return text

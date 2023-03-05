@@ -1,21 +1,23 @@
+# -*- coding: utf-8 -*-
+
 import logging
 
 import requests
 import json
 
+import config
 
-def transcribe() -> str:
+
+def transcribe(audio_file: str) -> str:
     """Transcribe audio using the whisper api
     :return: the text transcribed
     """
 
     logging.info('Transcribing audio')
 
-    # url of the whisper api, TODO : make it configurable
-    url = 'http://localhost:9000/asr?task=transcribe&language=fr&output=json'
+    url = config.WHISPER_API_URL
 
-    # open the audio file, TODO : pass it through parameters
-    files = {'audio_file': open('audio.wav', 'rb')}
+    files = {'audio_file': open(audio_file, 'rb')}
 
     response = requests.post(url, files=files)
 
@@ -29,11 +31,11 @@ def transcribe() -> str:
                 text = response["text"].encode("raw_unicode_escape").decode("utf-8")
             except UnicodeDecodeError:
                 text = response["text"]
-            logging.info("\t--> %s" % text)
+            logging.info("-->%s" % text)
 
             return text
         else:
-            logging.info("\t--> No text found")
+            logging.info("--> No text found")
             return ""
     else:
         logging.error(f'Error while transcribing audio. Status code: {response.status_code}')
