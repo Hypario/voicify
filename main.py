@@ -9,14 +9,12 @@ import os
 
 import config
 
-from utils import whisperapi, deeplapi
+from utils import whisperapi, deeplapi, voicevoxapi
 
 logging.basicConfig(
     format="%(asctime)-15s [%(levelname)s] %(funcName)s: %(message)s",
     encoding="utf-8",
     level=logging.INFO)
-
-filename = 'audio.wav'
 
 chunk = 2048
 format = pyaudio.paInt16
@@ -50,21 +48,26 @@ def record_audio():
     keyboard.unblock_key(config.RECORD_KEY)  # Unblock the record key
 
     # save the audio to a file
-    wf = wave.open(filename, 'wb')
+    wf = wave.open(config.INPUT_AUDIO_FILE, 'wb')
     wf.setnchannels(channels)
     wf.setsampwidth(p.get_sample_size(format))
     wf.setframerate(samplerate)
     wf.writeframes(b''.join(frames))
     wf.close()
 
-    logging.info(f'Recording stopped. Audio saved to {filename}')
+    logging.info(f'Recording stopped. Audio saved to {config.INPUT_AUDIO_FILE}')
 
 
 if __name__ == "__main__":
-    if os.path.isfile(filename):
-        os.remove(filename)
-        logging.info(f'File {filename} already exists. Deleting it.')
+    if os.path.isfile(config.INPUT_AUDIO_FILE):
+        os.remove(config.INPUT_AUDIO_FILE)
+        logging.info(f'File {config.INPUT_AUDIO_FILE} already exists. Deleting it.')
+
+    if os.path.isfile(config.OUTPUT_AUDIO_FILE):
+        os.remove(config.OUTPUT_AUDIO_FILE)
+        logging.info(f'File {config.OUTPUT_AUDIO_FILE} already exists. Deleting it.')
 
     record_audio()
-    transcribed = whisperapi.transcribe(filename)
+    transcribed = whisperapi.transcribe(config.INPUT_AUDIO_FILE)
     translated = deeplapi.translate("FR", "JA", transcribed)
+    voicevoxapi.speak(translated)

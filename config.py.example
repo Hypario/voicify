@@ -3,4 +3,9 @@ DEEPL_API_KEY = "YOUR_API_KEY"
 
 WHISPER_API_URL = 'http://localhost:9000/asr?task=transcribe&language=fr&output=json'
 
+VOICEVOX_API_URL = 'http://localhost:50021'
+
+INPUT_AUDIO = 'audio.wav'
+OUTPUT_AUDIO_FILE = "output.wav"
+
 RECORD_KEY = "space"
