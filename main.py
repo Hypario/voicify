@@ -3,6 +3,8 @@ import wave
 import keyboard
 import os
 
+from utils import deeplapi
+
 filename = 'audio.wav'
 
 chunk = 2048
