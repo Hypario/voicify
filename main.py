@@ -1,9 +1,15 @@
+import logging
+
 import pyaudio
 import wave
 import keyboard
 import os
 
-from utils import deeplapi
+from utils import whisperapi, deeplapi
+
+logging.basicConfig(
+    format="%(asctime)-15s [%(levelname)s] %(funcName)s: %(message)s",
+    level=logging.INFO)
 
 filename = 'audio.wav'
 
@@ -13,15 +19,18 @@ channels = 1
 samplerate = 44100  # sample rate in Hz
 
 
+# TODO : should return a byte array and send it to the whisper api, no need to save it to a file
 def record_audio():
+    """Record audio from microphone and save it to a file"""
+
     if os.path.isfile(filename):
         os.remove(filename)
-        print(f'File {filename} already exists. Deleting it.')
+        logging.info(f'File {filename} already exists. Deleting it.')
 
-    print('Press space bar to start recording')
+    logging.info('Press space bar to start recording')
     keyboard.wait("space")
 
-    print('Recording started')
+    logging.info('Recording started')
     keyboard.block_key('space')  # Block the 'space' key
 
     p = pyaudio.PyAudio()
@@ -45,8 +54,9 @@ def record_audio():
     wf.writeframes(b''.join(frames))
     wf.close()
 
-    print(f'Recording stopped. Audio saved to {filename}')
+    logging.info(f'Recording stopped. Audio saved to {filename}')
 
 
 if __name__ == "__main__":
     record_audio()
+    transcribed = whisperapi.transcribe()
