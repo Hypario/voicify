@@ -59,15 +59,16 @@ def record_audio():
 
 
 if __name__ == "__main__":
-    if os.path.isfile(config.INPUT_AUDIO_FILE):
-        os.remove(config.INPUT_AUDIO_FILE)
-        logging.info(f'File {config.INPUT_AUDIO_FILE} already exists. Deleting it.')
+    while True:
+        if os.path.isfile(config.INPUT_AUDIO_FILE):
+            os.remove(config.INPUT_AUDIO_FILE)
+            logging.info(f'File {config.INPUT_AUDIO_FILE} already exists. Deleting it.')
 
-    if os.path.isfile(config.OUTPUT_AUDIO_FILE):
-        os.remove(config.OUTPUT_AUDIO_FILE)
-        logging.info(f'File {config.OUTPUT_AUDIO_FILE} already exists. Deleting it.')
+        if os.path.isfile(config.OUTPUT_AUDIO_FILE):
+            os.remove(config.OUTPUT_AUDIO_FILE)
+            logging.info(f'File {config.OUTPUT_AUDIO_FILE} already exists. Deleting it.')
 
-    record_audio()
-    transcribed = whisperapi.transcribe(config.INPUT_AUDIO_FILE)
-    translated = deeplapi.translate("FR", "JA", transcribed)
-    voicevoxapi.speak(translated)
+        record_audio()
+        transcribed = whisperapi.transcribe(config.INPUT_AUDIO_FILE)
+        translated = deeplapi.translate("FR", "JA", transcribed)
+        voicevoxapi.speak(translated)
