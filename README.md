@@ -5,7 +5,7 @@ Everything is done in python and reproduce the basics of the video.
 ## How to use
 
 BEWARE: This is a very early version of the project, and it is not very user friendly.
-plus, it only works on windows.
+Plus, it only works on windows.
 
 ### Install the requirements
 
@@ -13,7 +13,7 @@ plus, it only works on windows.
 pip install -r requirements.txt
 ```
 
-you will also need docker with voicevox_engine installed, and a container with whisper
+you will also need docker with voicevox_engine installed, and a container with whisper.
 A dockerfile will be provided in the future (if I'm not too lazy).
 
 ### Run the script
